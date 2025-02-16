@@ -16,7 +16,7 @@ public class JournalEntryService {
     @Autowired
     private JournalEntryRepository journalEntryRepository;
     
-    public void saveEntry(JournalEntry journalEntry){
+    public void saveEntry(JournalEntry journalEntry, String userName){
         journalEntryRepository.save(journalEntry);
     }
 

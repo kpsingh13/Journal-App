@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.engineeringdigest.journalApp.entity.JournalEntry;
+import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.service.JournalEntryService;
+import net.engineeringdigest.journalApp.service.UserService;
 
 import java.util.Map;
 import java.util.Optional;
@@ -34,11 +36,17 @@ public class JournalEntryControlerV2 {
 
     @Autowired
     private JournalEntryService journalEntryService;
+
+    @Autowired
+    private UserService userService;
     
 
-    @GetMapping
-    public ResponseEntity<?> getAll(){
-        List<JournalEntry> all= journalEntryService.getAll();
+    @GetMapping("{userName}")
+    public ResponseEntity<?> getAllJournalEntriesofUsers(@PathVariable String userName){
+        
+        User user= userService.findByUserName(userName);
+
+        List<JournalEntry> all= user.getJournalEntries();
         if(all!=null && !all.isEmpty()){
             return new ResponseEntity<>(all, HttpStatus.OK);
         }
@@ -47,11 +55,14 @@ public class JournalEntryControlerV2 {
     }
 
 
-    @PostMapping
-    public ResponseEntity<JournalEntry> creatEntry(@RequestBody JournalEntry myEntry){
+    @PostMapping("{userName}")
+    public ResponseEntity<JournalEntry> creatEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName){
         try{
+
+           
+
             myEntry.setDate(LocalDateTime.now());
-            journalEntryService.saveEntry(myEntry);
+            journalEntryService.saveEntry(myEntry, userName);
             return new ResponseEntity<>(myEntry, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
