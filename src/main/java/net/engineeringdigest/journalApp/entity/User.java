@@ -13,6 +13,7 @@ import com.mongodb.lang.NonNull;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.bson.types.ObjectId;
@@ -25,6 +26,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 // @Getter  
 // @Setter   // or use @Data to handle any data entry exit
 @Data
+@NoArgsConstructor // added becaus @data annotation  does not handle no args constructor, so specifying it explicityly.
 public class User {
  
     @Id

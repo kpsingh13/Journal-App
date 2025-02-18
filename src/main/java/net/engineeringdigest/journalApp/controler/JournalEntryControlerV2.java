@@ -82,11 +82,14 @@ public class JournalEntryControlerV2 {
     }
 
 
-    @DeleteMapping("id/{myid}")
-    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myid){     // '?' here represents Wild card pattern. In future it can return the objects of soome other class also, not just Entity class.
-       journalEntryService.deleteById(myid);
-       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("id/{userName}/{myid}")
+    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myid, String userName){     // '?' here represents Wild card pattern. In future it can return the objects of soome other class also, not just Entity class.
+
+
+        journalEntryService.deleteById(myid, userName);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
     @PutMapping("id/{id}")
     public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry){
