@@ -58,9 +58,6 @@ public class JournalEntryControlerV2 {
     @PostMapping("{userName}")
     public ResponseEntity<JournalEntry> creatEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName){
         try{
-
-           
-
             myEntry.setDate(LocalDateTime.now());
             journalEntryService.saveEntry(myEntry, userName);
             return new ResponseEntity<>(myEntry, HttpStatus.OK);
