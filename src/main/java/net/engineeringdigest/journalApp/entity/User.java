@@ -40,6 +40,8 @@ public class User {
     @DBRef
     List<JournalEntry> journalEntries=new ArrayList<>();
 
+    private List<String> roles;
+    
     // public LocalDateTime getDate() {
     //     return date;
     // }
