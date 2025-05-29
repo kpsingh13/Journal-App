@@ -25,11 +25,11 @@ public class SpringSecurity  {
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(request -> request
+        return http.authorizeHttpRequests(request -> request    
                         // .antMatchers("/public/**").permitAll()
-                        .antMatchers("/journal/**").authenticated() //**-> means wild-card parterns, means anything after this */
+                        .antMatchers("/journal/**","/user/**").authenticated() //**-> means wild-card parterns, means anything after this */
                         // .antMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
@@ -44,7 +44,4 @@ public class SpringSecurity  {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-
 }
