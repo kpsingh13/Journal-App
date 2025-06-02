@@ -42,6 +42,10 @@ public class JournalEntryService {
 
     }
 
+    public void updateEntry(JournalEntry journalEntry){
+        journalEntryRepository.save(journalEntry);
+    }
+
     public List<JournalEntry> getAll(){
         return journalEntryRepository.findAll();
 
@@ -51,15 +55,24 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
-    public void deleteById(ObjectId id, String userName){
-        User user = userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x->x.getId().equals(id));
-        userService.saveEntry(user);
-        // journalEntryRepository.deleteById(id);
-        // user.getJournalEntries().removeIf(x->x.getId().equals(id));
-        // userService.saveEntry(user);
-        journalEntryRepository.deleteById(id);
-        
+    @Transactional
+    public boolean deleteById(ObjectId id, String userName){
+        boolean removed =false;
+        try{
+                
+            User user = userService.findByUserName(userName);
+            removed = user.getJournalEntries().removeIf(x->x.getId().equals(id));
+
+            if(removed){
+                userService.saveEntry(user);
+                journalEntryRepository.deleteById(id);
+            }
+           
+        }catch(Exception e){
+            System.out.println(e);
+            throw new RuntimeException("journal not found!...");
+        }
+         return removed;
     }
 
     public List<JournalEntry> findByUserName(String userName){
